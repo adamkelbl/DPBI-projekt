@@ -1,0 +1,184 @@
+/// Order header – one row per order. Hub table: Date and Customers filter it, it filters OrderItems/Payments/Reviews.
+table Orders
+
+	column OrderId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: OrderId
+
+	column CustomerId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: CustomerId
+
+	column CustomerUniqueId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: CustomerUniqueId
+
+	column OrderStatus
+		dataType: string
+		summarizeBy: none
+		sourceColumn: OrderStatus
+
+	column PurchaseTimestamp
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: PurchaseTimestamp
+
+	column PurchaseDate
+		dataType: dateTime
+		formatString: Short Date
+		isHidden
+		summarizeBy: none
+		sourceColumn: PurchaseDate
+
+	column ApprovedAt
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: ApprovedAt
+
+	column DeliveredCarrierDate
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: DeliveredCarrierDate
+
+	column DeliveredCustomerDate
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: DeliveredCustomerDate
+
+	column EstimatedDeliveryDate
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: EstimatedDeliveryDate
+
+	/// Calculated column: days from purchase to delivery to the customer.
+	column DeliveryDays =
+			IF(
+				NOT ISBLANK(Orders[DeliveredCustomerDate]),
+				DATEDIFF(Orders[PurchaseTimestamp], Orders[DeliveredCustomerDate], DAY)
+			)
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+
+	/// Calculated column: days after the estimated delivery date (negative = delivered early).
+	column DelayDays =
+			IF(
+				NOT ISBLANK(Orders[DeliveredCustomerDate]),
+				DATEDIFF(Orders[EstimatedDeliveryDate], Orders[DeliveredCustomerDate], DAY)
+			)
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+
+	/// Calculated column: Včas / Pozdě / Nedoručeno.
+	column DeliveryStatus =
+			SWITCH(
+				TRUE(),
+				ISBLANK(Orders[DeliveredCustomerDate]), "Nedoručeno",
+				Orders[DelayDays] > 0, "Pozdě",
+				"Včas"
+			)
+		dataType: string
+		summarizeBy: none
+		sortByColumn: DeliveryStatusOrder
+
+	column DeliveryStatusOrder =
+			SWITCH(Orders[DeliveryStatus], "Včas", 1, "Pozdě", 2, 3)
+		dataType: int64
+		isHidden
+		summarizeBy: none
+
+	/// Calculated column: delay bucket – used to show the review score drop with growing delay.
+	column DelayBucket =
+			SWITCH(
+				TRUE(),
+				ISBLANK(Orders[DelayDays]), "Nedoručeno",
+				Orders[DelayDays] <= -7, "7+ dní dříve",
+				Orders[DelayDays] <= 0, "Včas (0–6 dní dříve)",
+				Orders[DelayDays] <= 3, "1–3 dny pozdě",
+				Orders[DelayDays] <= 7, "4–7 dní pozdě",
+				"8+ dní pozdě"
+			)
+		dataType: string
+		summarizeBy: none
+		sortByColumn: DelayBucketOrder
+
+	column DelayBucketOrder =
+			SWITCH(
+				TRUE(),
+				ISBLANK(Orders[DelayDays]), 6,
+				Orders[DelayDays] <= -7, 1,
+				Orders[DelayDays] <= 0, 2,
+				Orders[DelayDays] <= 3, 3,
+				Orders[DelayDays] <= 7, 4,
+				5
+			)
+		dataType: int64
+		isHidden
+		summarizeBy: none
+
+	/// Calculated column: hour of purchase (0–23) for the weekday × hour heatmap.
+	column PurchaseHour = HOUR(Orders[PurchaseTimestamp])
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+
+	partition Orders = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "olist_orders_dataset.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+					Renamed = Table.RenameColumns(Promoted, {
+						{"order_id", "OrderId"},
+						{"customer_id", "CustomerId"},
+						{"order_status", "OrderStatusCode"},
+						{"order_purchase_timestamp", "PurchaseTimestamp"},
+						{"order_approved_at", "ApprovedAt"},
+						{"order_delivered_carrier_date", "DeliveredCarrierDate"},
+						{"order_delivered_customer_date", "DeliveredCustomerDate"},
+						{"order_estimated_delivery_date", "EstimatedDeliveryDate"}
+					}),
+					BlanksToNull = Table.ReplaceValue(Renamed, "", null, Replacer.ReplaceValue, {"ApprovedAt", "DeliveredCarrierDate", "DeliveredCustomerDate", "EstimatedDeliveryDate"}),
+					Typed = Table.TransformColumnTypes(BlanksToNull, {
+						{"OrderId", type text},
+						{"CustomerId", type text},
+						{"OrderStatusCode", type text},
+						{"PurchaseTimestamp", type datetime},
+						{"ApprovedAt", type datetime},
+						{"DeliveredCarrierDate", type datetime},
+						{"DeliveredCustomerDate", type datetime},
+						{"EstimatedDeliveryDate", type datetime}
+					}, "en-US"),
+					EstimatedToDate = Table.TransformColumns(Typed, {{"EstimatedDeliveryDate", each if _ = null then null else DateTime.Date(_), type date}}),
+					AddPurchaseDate = Table.AddColumn(EstimatedToDate, "PurchaseDate", each DateTime.Date([PurchaseTimestamp]), type date),
+					StatusMap = [
+						delivered = "Doručeno",
+						shipped = "Odesláno",
+						canceled = "Zrušeno",
+						unavailable = "Nedostupné",
+						invoiced = "Fakturováno",
+						processing = "Zpracovává se",
+						created = "Vytvořeno",
+						approved = "Schváleno"
+					],
+					AddStatus = Table.AddColumn(AddPurchaseDate, "OrderStatus", each Record.FieldOrDefault(StatusMap, [OrderStatusCode], [OrderStatusCode]), type text),
+					MergedCustomers = Table.NestedJoin(AddStatus, {"CustomerId"}, Customers, {"CustomerId"}, "Cust", JoinKind.LeftOuter),
+					ExpandedCustomers = Table.ExpandTableColumn(MergedCustomers, "Cust", {"CustomerUniqueId"}),
+					Final = Table.SelectColumns(ExpandedCustomers, {"OrderId", "CustomerId", "CustomerUniqueId", "OrderStatus", "PurchaseTimestamp", "PurchaseDate", "ApprovedAt", "DeliveredCarrierDate", "DeliveredCustomerDate", "EstimatedDeliveryDate"})
+				in
+					Final
+
+	annotation PBI_ResultType = Table
+

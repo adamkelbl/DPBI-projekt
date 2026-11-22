@@ -1,0 +1,81 @@
+/// Order lines – one row per item. Relationship to Orders is bidirectional (products/sellers filter order-level measures).
+table OrderItems
+
+	column OrderId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: OrderId
+
+	column OrderItemId
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: OrderItemId
+
+	column ProductId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: ProductId
+
+	column SellerId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: SellerId
+
+	column ShippingLimitDate
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: ShippingLimitDate
+
+	column Price
+		dataType: decimal
+		formatString: #,0.00
+		summarizeBy: sum
+		sourceColumn: Price
+
+	column Freight
+		dataType: decimal
+		formatString: #,0.00
+		summarizeBy: sum
+		sourceColumn: Freight
+
+	/// Calculated column: item price including freight.
+	column ItemTotal = OrderItems[Price] + OrderItems[Freight]
+		dataType: decimal
+		formatString: #,0.00
+		summarizeBy: sum
+
+	partition OrderItems = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "olist_order_items_dataset.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+					Renamed = Table.RenameColumns(Promoted, {
+						{"order_id", "OrderId"},
+						{"order_item_id", "OrderItemId"},
+						{"product_id", "ProductId"},
+						{"seller_id", "SellerId"},
+						{"shipping_limit_date", "ShippingLimitDate"},
+						{"price", "Price"},
+						{"freight_value", "Freight"}
+					}),
+					Typed = Table.TransformColumnTypes(Renamed, {
+						{"OrderId", type text},
+						{"OrderItemId", Int64.Type},
+						{"ProductId", type text},
+						{"SellerId", type text},
+						{"ShippingLimitDate", type datetime},
+						{"Price", Currency.Type},
+						{"Freight", Currency.Type}
+					}, "en-US")
+				in
+					Typed
+
+	annotation PBI_ResultType = Table
+

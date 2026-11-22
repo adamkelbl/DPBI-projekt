@@ -1,0 +1,137 @@
+/// Calendar (DAX calculated table), marked as date table. Czech month/weekday names.
+table Date
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: Short Date
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+	column Year
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+	column Quarter
+		dataType: string
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+	column MonthNo
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthNo]
+
+	column MonthName
+		dataType: string
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthName]
+		sortByColumn: MonthNo
+
+	column MonthShort
+		dataType: string
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthShort]
+		sortByColumn: MonthNo
+
+	column MonthStart
+		dataType: dateTime
+		formatString: mmm yyyy
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthStart]
+
+	column YearMonth
+		dataType: string
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [YearMonth]
+		sortByColumn: YearMonthNo
+
+	column YearMonthNo
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [YearMonthNo]
+
+	column WeekdayNo
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [WeekdayNo]
+
+	column WeekdayName
+		dataType: string
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [WeekdayName]
+		sortByColumn: WeekdayNo
+
+	column WeekdayShort
+		dataType: string
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [WeekdayShort]
+		sortByColumn: WeekdayNo
+
+	/// TRUE for 2017-01 … 2018-08 (complete months with representative volume). Use as page/visual filter for trends.
+	column IsAnalysisPeriod
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [IsAnalysisPeriod]
+
+	hierarchy 'Year-Month'
+
+		level Year
+			column: Year
+
+		level MonthName
+			column: MonthName
+
+		level Date
+			column: Date
+
+	partition Date = calculated
+		mode: import
+		source =
+				VAR _Base = CALENDAR(DATE(2016, 1, 1), DATE(2018, 12, 31))
+				RETURN
+					ADDCOLUMNS(
+						_Base,
+						"Year", YEAR([Date]),
+						"Quarter", "Q" & QUARTER([Date]),
+						"MonthNo", MONTH([Date]),
+						"MonthName", SWITCH(MONTH([Date]),
+							1, "Leden", 2, "Únor", 3, "Březen", 4, "Duben", 5, "Květen", 6, "Červen",
+							7, "Červenec", 8, "Srpen", 9, "Září", 10, "Říjen", 11, "Listopad", 12, "Prosinec"),
+						"MonthShort", SWITCH(MONTH([Date]),
+							1, "led", 2, "úno", 3, "bře", 4, "dub", 5, "kvě", 6, "čvn",
+							7, "čvc", 8, "srp", 9, "zář", 10, "říj", 11, "lis", 12, "pro"),
+						"MonthStart", DATE(YEAR([Date]), MONTH([Date]), 1),
+						"YearMonth", FORMAT([Date], "yyyy-mm"),
+						"YearMonthNo", YEAR([Date]) * 100 + MONTH([Date]),
+						"WeekdayNo", WEEKDAY([Date], 2),
+						"WeekdayName", SWITCH(WEEKDAY([Date], 2),
+							1, "Pondělí", 2, "Úterý", 3, "Středa", 4, "Čtvrtek", 5, "Pátek", 6, "Sobota", 7, "Neděle"),
+						"WeekdayShort", SWITCH(WEEKDAY([Date], 2),
+							1, "Po", 2, "Út", 3, "St", 4, "Čt", 5, "Pá", 6, "So", 7, "Ne"),
+						"IsAnalysisPeriod", [Date] >= DATE(2017, 1, 1) && [Date] <= DATE(2018, 8, 31)
+					)
+

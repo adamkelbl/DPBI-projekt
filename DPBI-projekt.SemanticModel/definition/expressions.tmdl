@@ -1,0 +1,5 @@
+/// Folder with the Olist CSV files. Must end with a backslash (Windows) – change in Transform data > Manage parameters.
+expression DataFolder = "C:\DPBI-projekt\data\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+	annotation PBI_ResultType = Text
+

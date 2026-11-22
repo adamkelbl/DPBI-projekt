@@ -1,0 +1,59 @@
+/// One row per customer_id (= per order). CustomerUniqueId identifies the real person.
+table Customers
+
+	column CustomerId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: CustomerId
+
+	column CustomerUniqueId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: CustomerUniqueId
+
+	column ZipPrefix
+		dataType: string
+		dataCategory: PostalCode
+		summarizeBy: none
+		sourceColumn: ZipPrefix
+
+	column City
+		dataType: string
+		dataCategory: City
+		summarizeBy: none
+		sourceColumn: City
+
+	column StateCode
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: StateCode
+
+	partition Customers = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "olist_customers_dataset.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+					Renamed = Table.RenameColumns(Promoted, {
+						{"customer_id", "CustomerId"},
+						{"customer_unique_id", "CustomerUniqueId"},
+						{"customer_zip_code_prefix", "ZipPrefix"},
+						{"customer_city", "City"},
+						{"customer_state", "StateCode"}
+					}),
+					Typed = Table.TransformColumnTypes(Renamed, {
+						{"CustomerId", type text},
+						{"CustomerUniqueId", type text},
+						{"ZipPrefix", type text},
+						{"City", type text},
+						{"StateCode", type text}
+					}, "en-US"),
+					ProperCity = Table.TransformColumns(Typed, {{"City", Text.Proper, type text}})
+				in
+					ProperCity
+
+	annotation PBI_ResultType = Table
+

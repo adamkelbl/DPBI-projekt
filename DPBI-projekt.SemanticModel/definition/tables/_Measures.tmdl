@@ -1,0 +1,232 @@
+/// Home table for all explicit measures. The only column is a hidden dummy.
+table _Measures
+
+
+	/// Sum of item prices (without freight), BRL.
+	measure Revenue = SUM(OrderItems[Price])
+		formatString: \R\$\ #,0
+		displayFolder: Sales
+
+	measure Freight = SUM(OrderItems[Freight])
+		formatString: \R\$\ #,0
+		displayFolder: Sales
+
+	/// Gross merchandise value = price + freight (uses calculated column ItemTotal).
+	measure GMV = SUM(OrderItems[ItemTotal])
+		formatString: \R\$\ #,0
+		displayFolder: Sales
+
+	measure 'Order Count' = COUNTROWS(Orders)
+		formatString: #,0
+		displayFolder: Sales
+
+	measure 'Items Sold' = COUNTROWS(OrderItems)
+		formatString: #,0
+		displayFolder: Sales
+
+	/// Average order value (GMV per order with at least one item).
+	measure 'Average Order Value' = DIVIDE([GMV], DISTINCTCOUNT(OrderItems[OrderId]))
+		formatString: \R\$\ #,0.00
+		displayFolder: Sales
+
+	measure 'Average Item Price' = AVERAGE(OrderItems[Price])
+		formatString: \R\$\ #,0.00
+		displayFolder: Sales
+
+	measure 'Freight Share' = DIVIDE([Freight], [GMV])
+		formatString: 0.0%
+		displayFolder: Sales
+
+
+	measure 'Customer Count' = DISTINCTCOUNT(Orders[CustomerUniqueId])
+		formatString: #,0
+		displayFolder: Customers
+
+	measure 'Repeat Customers' =
+			COUNTROWS(
+				FILTER(
+					VALUES(Orders[CustomerUniqueId]),
+					CALCULATE(COUNTROWS(Orders)) > 1
+				)
+			)
+		formatString: #,0
+		displayFolder: Customers
+
+	measure 'Repeat Customer Rate' = DIVIDE([Repeat Customers], [Customer Count])
+		formatString: 0.0%
+		displayFolder: Customers
+
+	measure 'Orders per Customer' = DIVIDE([Order Count], [Customer Count])
+		formatString: 0.00
+		displayFolder: Customers
+
+
+	measure 'Revenue PY' = CALCULATE([Revenue], SAMEPERIODLASTYEAR('Date'[Date]))
+		formatString: \R\$\ #,0
+		displayFolder: Time Intelligence
+
+	measure 'Revenue YoY %' =
+			VAR _py = [Revenue PY]
+			RETURN
+				IF(NOT ISBLANK(_py), DIVIDE([Revenue] - _py, _py))
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Time Intelligence
+
+	measure 'Revenue YTD' = TOTALYTD([Revenue], 'Date'[Date])
+		formatString: \R\$\ #,0
+		displayFolder: Time Intelligence
+
+	measure 'Revenue Running Total' =
+			VAR _maxDate = MAX('Date'[Date])
+			RETURN
+				CALCULATE([Revenue], 'Date'[Date] <= _maxDate, ALL('Date'))
+		formatString: \R\$\ #,0
+		displayFolder: Time Intelligence
+
+	measure 'Orders PY' = CALCULATE([Order Count], SAMEPERIODLASTYEAR('Date'[Date]))
+		formatString: #,0
+		displayFolder: Time Intelligence
+
+	measure 'Orders YoY %' =
+			VAR _py = [Orders PY]
+			RETURN
+				IF(NOT ISBLANK(_py), DIVIDE([Order Count] - _py, _py))
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Time Intelligence
+
+
+	measure 'Delivered Orders' = CALCULATE([Order Count], Orders[DeliveryStatus] <> "Nedoručeno")
+		formatString: #,0
+		displayFolder: Delivery
+
+	measure 'Late Orders' = CALCULATE([Order Count], Orders[DeliveryStatus] = "Pozdě")
+		formatString: #,0
+		displayFolder: Delivery
+
+	/// Share of delivered orders that arrived on or before the estimated date.
+	measure 'On-Time Rate' = DIVIDE([Delivered Orders] - [Late Orders], [Delivered Orders])
+		formatString: 0.0%
+		displayFolder: Delivery
+
+	measure 'Late Rate' = DIVIDE([Late Orders], [Delivered Orders])
+		formatString: 0.0%
+		displayFolder: Delivery
+
+	measure 'Avg Delivery Days' = AVERAGE(Orders[DeliveryDays])
+		formatString: 0.0
+		displayFolder: Delivery
+
+	measure 'Avg Delay of Late Orders' = CALCULATE(AVERAGE(Orders[DelayDays]), Orders[DeliveryStatus] = "Pozdě")
+		formatString: 0.0
+		displayFolder: Delivery
+
+
+	measure 'Review Count' = COUNTROWS(Reviews)
+		formatString: #,0
+		displayFolder: Reviews
+
+	measure 'Avg Review Score' = AVERAGE(Reviews[ReviewScore])
+		formatString: 0.00
+		displayFolder: Reviews
+
+	measure 'Positive Review Rate' = DIVIDE(CALCULATE([Review Count], Reviews[Sentiment] = "Pozitivní"), [Review Count])
+		formatString: 0.0%
+		displayFolder: Reviews
+
+	measure 'Negative Review Rate' = DIVIDE(CALCULATE([Review Count], Reviews[Sentiment] = "Negativní"), [Review Count])
+		formatString: 0.0%
+		displayFolder: Reviews
+
+	/// Key insight: how many stars late delivery costs (on-time avg − late avg).
+	measure 'Review Gap On-Time vs Late' =
+			CALCULATE([Avg Review Score], Orders[DeliveryStatus] = "Včas")
+				- CALCULATE([Avg Review Score], Orders[DeliveryStatus] = "Pozdě")
+		formatString: 0.00
+		displayFolder: Reviews
+
+
+	measure 'Payment Value' = SUM(Payments[PaymentValue])
+		formatString: \R\$\ #,0
+		displayFolder: Payments
+
+	measure 'Avg Installments' = AVERAGE(Payments[Installments])
+		formatString: 0.0
+		displayFolder: Payments
+
+	measure 'Payment Share' = DIVIDE([Payment Value], CALCULATE([Payment Value], ALLSELECTED(Payments[PaymentType])))
+		formatString: 0.0%
+		displayFolder: Payments
+
+
+	measure 'Category Rank' =
+			IF(
+				ISINSCOPE(Products[Category]),
+				RANKX(ALLSELECTED(Products[Category]), [Revenue], , DESC, DENSE)
+			)
+		formatString: 0
+		displayFolder: Ranking
+
+	measure 'Seller Rank' =
+			IF(
+				ISINSCOPE(Sellers[SellerId]),
+				RANKX(ALLSELECTED(Sellers[SellerId]), [Revenue], , DESC, DENSE)
+			)
+		formatString: 0
+		displayFolder: Ranking
+
+
+	/// Dynamic subtitle: selected state(s) and year(s).
+	measure 'Selection Title' =
+			VAR _state =
+				SWITCH(
+					TRUE(),
+					NOT ISCROSSFILTERED(States[StateCode]), "Celá Brazílie",
+					HASONEVALUE(States[StateName]), VALUES(States[StateName]),
+					"Vybrané státy (" & COUNTROWS(VALUES(States[StateCode])) & ")"
+				)
+			VAR _year =
+				IF(
+					HASONEVALUE('Date'[Year]),
+					FORMAT(VALUES('Date'[Year]), "0"),
+					FORMAT(MIN('Date'[Year]), "0") & "–" & FORMAT(MAX('Date'[Year]), "0")
+				)
+			RETURN
+				_state & "  |  " & _year
+		displayFolder: UI
+
+	/// Header of the drillthrough page: selected product category.
+	measure 'Selected Category' = "Kategorie: " & SELECTEDVALUE(Products[Category], "více kategorií")
+		displayFolder: UI
+
+	measure 'On-Time Color' =
+			SWITCH(
+				TRUE(),
+				ISBLANK([On-Time Rate]), BLANK(),
+				[On-Time Rate] >= 0.92, "#1B7F5A",
+				[On-Time Rate] >= 0.85, "#E0A100",
+				"#C0392B"
+			)
+		displayFolder: UI
+
+	measure 'Review Color' =
+			SWITCH(
+				TRUE(),
+				ISBLANK([Avg Review Score]), BLANK(),
+				[Avg Review Score] >= 4, "#1B7F5A",
+				[Avg Review Score] >= 3, "#E0A100",
+				"#C0392B"
+			)
+		displayFolder: UI
+
+	column Value
+		dataType: int64
+		isHidden
+		formatString: 0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value]
+
+	partition _Measures = calculated
+		mode: import
+		source = {0}
+

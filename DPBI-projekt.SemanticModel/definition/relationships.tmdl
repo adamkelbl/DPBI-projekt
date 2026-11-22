@@ -1,0 +1,33 @@
+relationship 5b1f0c3e-6a1d-4d2b-9a01-0a1b2c3d4e01
+	fromColumn: Orders.CustomerId
+	toColumn: Customers.CustomerId
+
+relationship 5b1f0c3e-6a1d-4d2b-9a01-0a1b2c3d4e02
+	fromColumn: Orders.PurchaseDate
+	toColumn: Date.Date
+
+relationship 5b1f0c3e-6a1d-4d2b-9a01-0a1b2c3d4e03
+	crossFilteringBehavior: bothDirections
+	fromColumn: OrderItems.OrderId
+	toColumn: Orders.OrderId
+
+relationship 5b1f0c3e-6a1d-4d2b-9a01-0a1b2c3d4e04
+	fromColumn: OrderItems.ProductId
+	toColumn: Products.ProductId
+
+relationship 5b1f0c3e-6a1d-4d2b-9a01-0a1b2c3d4e05
+	fromColumn: OrderItems.SellerId
+	toColumn: Sellers.SellerId
+
+relationship 5b1f0c3e-6a1d-4d2b-9a01-0a1b2c3d4e06
+	fromColumn: Payments.OrderId
+	toColumn: Orders.OrderId
+
+relationship 5b1f0c3e-6a1d-4d2b-9a01-0a1b2c3d4e07
+	fromColumn: Reviews.OrderId
+	toColumn: Orders.OrderId
+
+relationship 5b1f0c3e-6a1d-4d2b-9a01-0a1b2c3d4e08
+	fromColumn: Customers.StateCode
+	toColumn: States.StateCode
+

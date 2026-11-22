@@ -1,0 +1,85 @@
+/// Customer reviews (1–5). Portuguese comment texts dropped, only HasComment flag kept.
+table Reviews
+
+	column ReviewId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: ReviewId
+
+	column OrderId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: OrderId
+
+	column ReviewScore
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: ReviewScore
+
+	column HasComment
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		summarizeBy: none
+		sourceColumn: HasComment
+
+	column ReviewCreationDate
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: ReviewCreationDate
+
+	column ReviewAnswerTimestamp
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: ReviewAnswerTimestamp
+
+	/// Calculated column: 1–2 negative, 3 neutral, 4–5 positive.
+	column Sentiment =
+			SWITCH(
+				TRUE(),
+				Reviews[ReviewScore] >= 4, "Pozitivní",
+				Reviews[ReviewScore] = 3, "Neutrální",
+				"Negativní"
+			)
+		dataType: string
+		summarizeBy: none
+		sortByColumn: SentimentOrder
+
+	column SentimentOrder =
+			SWITCH(Reviews[Sentiment], "Pozitivní", 1, "Neutrální", 2, 3)
+		dataType: int64
+		isHidden
+		summarizeBy: none
+
+	partition Reviews = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "olist_order_reviews_dataset.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+					AddHasComment = Table.AddColumn(Promoted, "HasComment", each [review_comment_message] <> null and Text.Trim([review_comment_message]) <> "", type logical),
+					Renamed = Table.RenameColumns(AddHasComment, {
+						{"review_id", "ReviewId"},
+						{"order_id", "OrderId"},
+						{"review_score", "ReviewScore"},
+						{"review_creation_date", "ReviewCreationDate"},
+						{"review_answer_timestamp", "ReviewAnswerTimestamp"}
+					}),
+					Selected = Table.SelectColumns(Renamed, {"ReviewId", "OrderId", "ReviewScore", "HasComment", "ReviewCreationDate", "ReviewAnswerTimestamp"}),
+					Typed = Table.TransformColumnTypes(Selected, {
+						{"ReviewId", type text},
+						{"OrderId", type text},
+						{"ReviewScore", Int64.Type},
+						{"ReviewCreationDate", type datetime},
+						{"ReviewAnswerTimestamp", type datetime}
+					}, "en-US"),
+					CreationToDate = Table.TransformColumns(Typed, {{"ReviewCreationDate", each if _ = null then null else DateTime.Date(_), type date}})
+				in
+					CreationToDate
+
+	annotation PBI_ResultType = Table
+

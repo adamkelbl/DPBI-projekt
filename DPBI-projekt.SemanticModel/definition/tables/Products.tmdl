@@ -1,0 +1,121 @@
+/// Products with English category names (merged from the translation CSV, prettified).
+table Products
+
+	column ProductId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: ProductId
+
+	column Category
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Category
+
+	column CategoryPt
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: CategoryPt
+
+	column PhotosQty
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: PhotosQty
+
+	column WeightG
+		dataType: double
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: WeightG
+
+	column LengthCm
+		dataType: double
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: LengthCm
+
+	column HeightCm
+		dataType: double
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: HeightCm
+
+	column WidthCm
+		dataType: double
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: WidthCm
+
+	/// Calculated column: weight bucket of the product.
+	column WeightClass =
+			SWITCH(
+				TRUE(),
+				ISBLANK(Products[WeightG]), "Neuvedeno",
+				Products[WeightG] < 500, "Lehké (do 0,5 kg)",
+				Products[WeightG] < 2000, "Střední (0,5–2 kg)",
+				Products[WeightG] < 10000, "Těžké (2–10 kg)",
+				"Velmi těžké (10+ kg)"
+			)
+		dataType: string
+		summarizeBy: none
+		sortByColumn: WeightClassOrder
+
+	column WeightClassOrder =
+			SWITCH(
+				TRUE(),
+				ISBLANK(Products[WeightG]), 5,
+				Products[WeightG] < 500, 1,
+				Products[WeightG] < 2000, 2,
+				Products[WeightG] < 10000, 3,
+				4
+			)
+		dataType: int64
+		isHidden
+		summarizeBy: none
+
+	partition Products = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "olist_products_dataset.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+					Selected = Table.SelectColumns(Promoted, {"product_id", "product_category_name", "product_photos_qty", "product_weight_g", "product_length_cm", "product_height_cm", "product_width_cm"}),
+					Renamed = Table.RenameColumns(Selected, {
+						{"product_id", "ProductId"},
+						{"product_category_name", "CategoryPt"},
+						{"product_photos_qty", "PhotosQty"},
+						{"product_weight_g", "WeightG"},
+						{"product_length_cm", "LengthCm"},
+						{"product_height_cm", "HeightCm"},
+						{"product_width_cm", "WidthCm"}
+					}),
+					BlanksToNull = Table.ReplaceValue(Renamed, "", null, Replacer.ReplaceValue, {"CategoryPt", "PhotosQty", "WeightG", "LengthCm", "HeightCm", "WidthCm"}),
+					Typed = Table.TransformColumnTypes(BlanksToNull, {
+						{"ProductId", type text},
+						{"CategoryPt", type text},
+						{"PhotosQty", Int64.Type},
+						{"WeightG", type number},
+						{"LengthCm", type number},
+						{"HeightCm", type number},
+						{"WidthCm", type number}
+					}, "en-US"),
+					TranslationRaw = Table.PromoteHeaders(Csv.Document(File.Contents(DataFolder & "product_category_name_translation.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]), [PromoteAllScalars = true]),
+					// rename by position – the file starts with a UTF-8 BOM
+					Translation = Table.RenameColumns(TranslationRaw, {
+						{Table.ColumnNames(TranslationRaw){0}, "CategoryPt"},
+						{Table.ColumnNames(TranslationRaw){1}, "CategoryEn"}
+					}),
+					Merged = Table.NestedJoin(Typed, {"CategoryPt"}, Translation, {"CategoryPt"}, "Tr", JoinKind.LeftOuter),
+					Expanded = Table.ExpandTableColumn(Merged, "Tr", {"CategoryEn"}),
+					AddCategory = Table.AddColumn(Expanded, "Category", each
+						if [CategoryEn] <> null then Text.Proper(Text.Replace([CategoryEn], "_", " "))
+						else if [CategoryPt] <> null then Text.Proper(Text.Replace([CategoryPt], "_", " "))
+						else "(Neuvedeno)", type text),
+					Final = Table.RemoveColumns(AddCategory, {"CategoryEn"})
+				in
+					Final
+
+	annotation PBI_ResultType = Table
+

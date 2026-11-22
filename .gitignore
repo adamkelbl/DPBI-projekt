@@ -1,2 +1,5 @@
 **/.pbi/localSettings.json
 **/.pbi/cache.abf
+.DS_Store
+# 61 MB, 1M rows – not used by the model (map uses States lat/lng)
+data/olist_geolocation_dataset.csv

@@ -1,0 +1,79 @@
+/// Brazilian states (27). Manually entered: Czech region names, state capital coordinates for the map.
+table States
+
+	column StateCode
+		dataType: string
+		summarizeBy: none
+		sourceColumn: StateCode
+
+	column StateName
+		dataType: string
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: StateName
+
+	column Region
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Region
+
+	column Latitude
+		dataType: double
+		dataCategory: Latitude
+		summarizeBy: none
+		sourceColumn: Latitude
+
+	column Longitude
+		dataType: double
+		dataCategory: Longitude
+		summarizeBy: none
+		sourceColumn: Longitude
+
+	column MapLocation
+		dataType: string
+		dataCategory: Place
+		summarizeBy: none
+		sourceColumn: MapLocation
+
+	partition States = m
+		mode: import
+		source =
+				let
+					Source = #table(
+						type table [StateCode = text, StateName = text, Region = text, Latitude = number, Longitude = number],
+						{
+							{"AC", "Acre", "Sever", -9.975, -67.825},
+							{"AM", "Amazonas", "Sever", -3.119, -60.022},
+							{"AP", "Amapá", "Sever", 0.035, -51.070},
+							{"PA", "Pará", "Sever", -1.456, -48.490},
+							{"RO", "Rondônia", "Sever", -8.762, -63.904},
+							{"RR", "Roraima", "Sever", 2.820, -60.672},
+							{"TO", "Tocantins", "Sever", -10.184, -48.334},
+							{"AL", "Alagoas", "Severovýchod", -9.665, -35.735},
+							{"BA", "Bahia", "Severovýchod", -12.971, -38.501},
+							{"CE", "Ceará", "Severovýchod", -3.732, -38.527},
+							{"MA", "Maranhão", "Severovýchod", -2.530, -44.303},
+							{"PB", "Paraíba", "Severovýchod", -7.119, -34.845},
+							{"PE", "Pernambuco", "Severovýchod", -8.048, -34.877},
+							{"PI", "Piauí", "Severovýchod", -5.089, -42.802},
+							{"RN", "Rio Grande do Norte", "Severovýchod", -5.795, -35.209},
+							{"SE", "Sergipe", "Severovýchod", -10.947, -37.073},
+							{"DF", "Distrito Federal", "Středozápad", -15.794, -47.882},
+							{"GO", "Goiás", "Středozápad", -16.686, -49.265},
+							{"MS", "Mato Grosso do Sul", "Středozápad", -20.469, -54.620},
+							{"MT", "Mato Grosso", "Středozápad", -15.601, -56.097},
+							{"ES", "Espírito Santo", "Jihovýchod", -20.315, -40.312},
+							{"MG", "Minas Gerais", "Jihovýchod", -19.917, -43.935},
+							{"RJ", "Rio de Janeiro", "Jihovýchod", -22.907, -43.173},
+							{"SP", "São Paulo", "Jihovýchod", -23.551, -46.633},
+							{"PR", "Paraná", "Jih", -25.428, -49.273},
+							{"RS", "Rio Grande do Sul", "Jih", -30.035, -51.218},
+							{"SC", "Santa Catarina", "Jih", -27.595, -48.548}
+						}
+					),
+					AddMapLocation = Table.AddColumn(Source, "MapLocation", each [StateName] & ", Brazil", type text)
+				in
+					AddMapLocation
+
+	annotation PBI_ResultType = Table
+

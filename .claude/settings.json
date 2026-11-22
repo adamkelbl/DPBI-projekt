@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "pbip@power-bi-agentic-development": true,
+    "semantic-models@power-bi-agentic-development": true,
+    "reports@power-bi-agentic-development": true
+  }
+}

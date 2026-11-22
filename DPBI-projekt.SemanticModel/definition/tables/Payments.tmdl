@@ -1,0 +1,67 @@
+/// Payments – an order can be paid in several parts (PaymentSequential).
+table Payments
+
+	column OrderId
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: OrderId
+
+	column PaymentSequential
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: PaymentSequential
+
+	column PaymentType
+		dataType: string
+		summarizeBy: none
+		sourceColumn: PaymentType
+
+	column Installments
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Installments
+
+	column PaymentValue
+		dataType: decimal
+		formatString: #,0.00
+		summarizeBy: sum
+		sourceColumn: PaymentValue
+
+	partition Payments = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "olist_order_payments_dataset.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+					Renamed = Table.RenameColumns(Promoted, {
+						{"order_id", "OrderId"},
+						{"payment_sequential", "PaymentSequential"},
+						{"payment_type", "PaymentTypeCode"},
+						{"payment_installments", "Installments"},
+						{"payment_value", "PaymentValue"}
+					}),
+					Typed = Table.TransformColumnTypes(Renamed, {
+						{"OrderId", type text},
+						{"PaymentSequential", Int64.Type},
+						{"PaymentTypeCode", type text},
+						{"Installments", Int64.Type},
+						{"PaymentValue", Currency.Type}
+					}, "en-US"),
+					TypeMap = [
+						credit_card = "Kreditní karta",
+						boleto = "Boleto",
+						voucher = "Voucher",
+						debit_card = "Debetní karta",
+						not_defined = "Neurčeno"
+					],
+					AddType = Table.AddColumn(Typed, "PaymentType", each Record.FieldOrDefault(TypeMap, [PaymentTypeCode], [PaymentTypeCode]), type text),
+					Final = Table.RemoveColumns(AddType, {"PaymentTypeCode"})
+				in
+					Final
+
+	annotation PBI_ResultType = Table
+
