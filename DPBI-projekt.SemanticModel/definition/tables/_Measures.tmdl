@@ -116,7 +116,7 @@ table _Measures
 		lineageTag: 9443635e-d423-4d97-b329-e6ff2f868a6c
 
 	measure 'Late Orders' = CALCULATE([Order Count], Orders[DeliveryStatus] = "Pozdě")
-		formatString: #,0
+		formatString: 0
 		displayFolder: Delivery
 		lineageTag: 56dc77a3-923a-48e6-8bca-9cbb35719499
 

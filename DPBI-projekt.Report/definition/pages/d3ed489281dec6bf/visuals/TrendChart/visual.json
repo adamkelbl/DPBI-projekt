@@ -3,9 +3,9 @@
   "name": "TrendChart",
   "position": {
     "x": 24,
-    "y": 248,
+    "y": 192,
     "z": 0,
-    "height": 256,
+    "height": 320,
     "width": 800,
     "tabOrder": 0
   },

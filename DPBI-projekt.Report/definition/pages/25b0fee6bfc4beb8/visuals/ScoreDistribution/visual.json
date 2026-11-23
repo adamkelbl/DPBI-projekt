@@ -3,9 +3,9 @@
   "name": "ScoreDistribution",
   "position": {
     "x": 24,
-    "y": 200,
+    "y": 192,
     "z": 0,
-    "height": 248,
+    "height": 256,
     "width": 400,
     "tabOrder": 0
   },

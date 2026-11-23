@@ -3,9 +3,9 @@
   "name": "DeliveryVsReview",
   "position": {
     "x": 640,
-    "y": 200,
+    "y": 192,
     "z": 0,
-    "height": 248,
+    "height": 256,
     "width": 616,
     "tabOrder": 0
   },
@@ -88,6 +88,55 @@
               "queryRef": "_Measures.Avg Review Score",
               "nativeQueryRef": "Avg Review Score",
               "displayName": "Ø hodnocení"
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Revenue"
+                }
+              },
+              "queryRef": "_Measures.Revenue",
+              "nativeQueryRef": "Revenue",
+              "displayName": "Tržby"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "On-Time Rate"
+                }
+              },
+              "queryRef": "_Measures.On-Time Rate",
+              "nativeQueryRef": "On-Time Rate",
+              "displayName": "Doručeno včas"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Late Orders"
+                }
+              },
+              "queryRef": "_Measures.Late Orders",
+              "nativeQueryRef": "Late Orders",
+              "displayName": "Opožděné objednávky"
             }
           ]
         }

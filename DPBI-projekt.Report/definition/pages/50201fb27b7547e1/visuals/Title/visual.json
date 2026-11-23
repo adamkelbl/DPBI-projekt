@@ -3,9 +3,9 @@
   "name": "40cf60670786fbfe",
   "position": {
     "x": 24,
-    "y": 18,
-    "width": 400,
-    "height": 60,
+    "y": 6,
+    "width": 760,
+    "height": 80,
     "z": 0
   },
   "visual": {
@@ -18,10 +18,24 @@
               {
                 "textRuns": [
                   {
-                    "value": "Geografie a doručení",
                     "textStyle": {
-                      "fontSize": "24pt"
-                    }
+                      "color": "#252423",
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "28pt"
+                    },
+                    "value": "Geografie a doručení"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#707070",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "11pt"
+                    },
+                    "value": "Kde zákazníci nakupují a jak rychle jim zboží dorazí"
                   }
                 ]
               }
@@ -64,6 +78,40 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
