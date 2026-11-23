@@ -1,5 +1,4 @@
-# Olist E-commerce Dashboard
-
+# DPBI - Závěrečný projekt
 Závěrečný projekt do předmětu **DPBI** – Zpracování dat s PowerBI.
 
 ## Data
