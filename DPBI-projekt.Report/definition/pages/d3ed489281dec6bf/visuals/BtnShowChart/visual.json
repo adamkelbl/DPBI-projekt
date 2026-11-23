@@ -1,5 +1,14 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "BtnShowChart",
+  "position": {
+    "x": 632,
+    "y": 198,
+    "z": 5000,
+    "height": 28,
+    "width": 88,
+    "tabOrder": 0
+  },
   "visual": {
     "visualType": "actionButton",
     "query": {
@@ -19,9 +28,6 @@
           }
         },
         {
-          "selector": {
-            "id": "default"
-          },
           "properties": {
             "text": {
               "expr": {
@@ -55,13 +61,6 @@
                 }
               }
             },
-            "padding": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
             "fontSize": {
               "expr": {
                 "Literal": {
@@ -69,6 +68,9 @@
                 }
               }
             }
+          },
+          "selector": {
+            "id": "default"
           }
         }
       ],
@@ -85,9 +87,6 @@
           }
         },
         {
-          "selector": {
-            "id": "default"
-          },
           "properties": {
             "fillColor": {
               "solid": {
@@ -107,12 +106,12 @@
                 }
               }
             }
+          },
+          "selector": {
+            "id": "default"
           }
         },
         {
-          "selector": {
-            "id": "hover"
-          },
           "properties": {
             "fillColor": {
               "solid": {
@@ -132,6 +131,9 @@
                 }
               }
             }
+          },
+          "selector": {
+            "id": "hover"
           }
         }
       ],
@@ -149,7 +151,6 @@
         }
       ]
     },
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "visualLink": [
         {
@@ -314,15 +315,7 @@
           }
         }
       ]
-    }
-  },
-  "position": {
-    "x": 632,
-    "y": 198,
-    "width": 88,
-    "height": 28,
-    "z": 5000,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json"
+    },
+    "drillFilterOtherVisuals": true
+  }
 }

@@ -1,0 +1,164 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "IntroProcess",
+  "position": {
+    "x": 24,
+    "y": 444,
+    "z": 0,
+    "width": 1232,
+    "height": 260,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#252423",
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "16pt"
+                    },
+                    "value": "Jak report vznikl"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#404040",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt"
+                    },
+                    "value": "Pracoval jsem na Macu, kde Power BI Desktop neběží – proto jsem během práce používal formát PBIP (Power BI Project); finální report je klasický .pbix."
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#404040",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt"
+                    },
+                    "value": "V PBIP je vše v textových souborech: datový model ve formátu TMDL a report ve formátu PBIR (JSON)."
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#404040",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt"
+                    },
+                    "value": "Soubory jsem psal s AI asistentem Claude Code a jeho pluginy a skills z marketplace Data Goblins (Kurt Buhler)."
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#404040",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt"
+                    },
+                    "value": "Vizuály jsem vytvářel a kontroloval nástrojem pbir CLI od Kurta Buhlera a Maxima Anatska."
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#404040",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt"
+                    },
+                    "value": "Projekt jsem přes Git (GitHub) průběžně přenášel na Windows, kde jsem ho v Power BI Desktop kontroloval a dělal ruční úpravy; velkou část práce jsem ale udělal programaticky s Claude Code."
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#1B7F5A",
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "12pt"
+                    },
+                    "value": "Myslím si, že tohle je budoucnost BI: AI je nástroj, který urychlí stavbu reportu, ale mozkem zůstává člověk – má nad vším úplnou kontrolu, určuje logiku, otázky i závěry."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "padding": [
+        {
+          "properties": {
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "20D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "20D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

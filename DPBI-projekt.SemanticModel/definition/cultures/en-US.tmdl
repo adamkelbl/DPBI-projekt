@@ -296,6 +296,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "Prodané položky": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -352,6 +362,16 @@ cultureInfo en-US
 			      "Terms": [
 			        {
 			          "Podíl pozdních doručení": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Podíl opožděných": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",

@@ -29,6 +29,7 @@ Slicers sync across pages via `visual.syncGroup` (field + filter changes).
 
 | Page | Visuals |
 |---|---|
+| Úvod (first page, `a0c1e2d3f4b5a6c7`) | title textbox · 3 text cards: O datech, O reportu, Jak report vznikl (Mac → PBIP/TMDL/PBIR, Claude Code + Data Goblins plugins/skills, pbir CLI by Kurt Buhler & Maxim Anatsko, Git → Windows). No slicers. Source text: Czech, edited in the visual.json files |
 | Přehled | 5 KPI cards (Tržby, Objednávky, Průměrná objednávka, Doručeno včas, Ø hodnocení) · combo chart monthly Revenue + Order Count (`TrendChart`) ↔ matrix Year/Month (`TrendMatrix`, hidden) toggled by buttons Graf / Tabulka (bookmarks, placed in the chart's title row) · bar Revenue by region · bar payments by type (`PaymentDonut` folder) · line running total |
 | Geografie a doručení | 5 KPI cards (on-time, delivery days, late orders, avg delay, review gap) · bar chart Revenue by state (`StateMap` folder, colour = On-Time Color) · scatter delivery days vs review per state (labels = state code, size = orders) · column Avg review by DelayBucket (colour = Review Color) |
 | Produkty a prodejci | Top 10 categories bar (TopN filter) · treemap Revenue by seller region · column late rate by weight class · matrix category performance (data bars on Revenue, Review Color font) · table Top 20 sellers (TopN) |

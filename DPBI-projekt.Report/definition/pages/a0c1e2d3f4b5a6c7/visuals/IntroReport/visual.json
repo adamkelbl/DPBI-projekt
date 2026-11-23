@@ -1,0 +1,152 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "IntroReport",
+  "position": {
+    "x": 656,
+    "y": 116,
+    "z": 0,
+    "width": 600,
+    "height": 316,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#252423",
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "16pt"
+                    },
+                    "value": "O reportu"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#404040",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt"
+                    },
+                    "value": "Kde, co a komu Olist prodává – a jak zpoždění doručení ovlivňuje hodnocení."
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#404040",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt"
+                    },
+                    "value": "Objednávky doručené včas mají průměrně 4,3 ★, pozdní jen 2,3 ★."
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#404040",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt"
+                    },
+                    "value": "Datový model je hvězdicové schéma: uprostřed objednávky, kolem nich zákazníci, produkty, prodejci, platby, recenze, státy a kalendář."
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#404040",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt"
+                    },
+                    "value": "Výpočtové sloupce v DAX (zpoždění ve dnech, stav doručení, sentiment recenze) a 38 measures – tržby, průměrná objednávka, podíl doručení včas, meziroční změna, pořadí kategorií…"
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "textStyle": {
+                      "color": "#404040",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12pt"
+                    },
+                    "value": "Filtry Rok a Region platí na všech stránkách; kliknutí na graf filtruje ostatní vizuály a tooltip ukáže detaily."
+                  }
+                ],
+                "listType": "bullet"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "padding": [
+        {
+          "properties": {
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "20D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "20D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

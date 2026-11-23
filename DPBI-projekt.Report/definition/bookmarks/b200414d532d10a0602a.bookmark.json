@@ -3,16 +3,16 @@
   "displayName": "Trend – tabulka",
   "name": "b200414d532d10a0602a",
   "options": {
+    "applyOnlyToTargetVisuals": true,
     "targetVisualNames": [
       "TrendChart",
       "TrendMatrix"
     ],
-    "applyOnlyToTargetVisuals": true,
     "suppressActiveSection": true,
     "suppressData": true
   },
   "explorationState": {
-    "version": "1.3",
+    "version": "1.0",
     "activeSection": "d3ed489281dec6bf",
     "sections": {
       "d3ed489281dec6bf": {
@@ -21,7 +21,9 @@
             "singleVisual": {
               "visualType": "lineClusteredColumnComboChart",
               "objects": {},
-              "display": { "mode": "hidden" }
+              "display": {
+                "mode": "hidden"
+              }
             }
           },
           "TrendMatrix": {
