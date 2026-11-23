@@ -38,6 +38,7 @@ Revenue R$ 13 591 644 · GMV R$ 15 843 553 · Order Count 99 441 · AOV R$ 160.5
 - CSV type conversion always with culture `"en-US"` (Czech Windows locale would misread decimals).
 - TMDL indented with tabs; no `//` comments outside expressions (use `///` descriptions).
 - Auto date/time disabled; use the `Date` table.
+- A sort-by column must never reference the column it sorts (circular dependency) – compute it from the same base columns.
 
 ## Current phase
-Phase 2 – model + report pages written (`pbir validate --all`: 0 errors). Awaiting first Refresh/render on Windows; then Desktop-only steps from `docs/report.md` (bookmark capture, slicer sync).
+Phase 3 – report fixed after first render on Windows: map replaced by bar chart, header re-laid out, bookmarks + slicer sync written in files (no Desktop-only steps). Tooltip and drillthrough pages removed at the user's request. On this Windows machine `pbir` is not installed; report JSON was edited directly and checked by parsing.

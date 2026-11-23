@@ -1,33 +1,39 @@
 /// Payments – an order can be paid in several parts (PaymentSequential).
 table Payments
+	lineageTag: 72a3a9d3-4bb4-4706-99db-1d240b1d8652
 
 	column OrderId
 		dataType: string
 		isHidden
+		lineageTag: 908f63e8-6e9f-4ded-b107-0deb007b9706
 		summarizeBy: none
 		sourceColumn: OrderId
 
 	column PaymentSequential
 		dataType: int64
-		formatString: 0
 		isHidden
+		formatString: 0
+		lineageTag: 81b2d444-2fa8-44e7-82e7-ddbc6e8d81c6
 		summarizeBy: none
 		sourceColumn: PaymentSequential
 
 	column PaymentType
 		dataType: string
+		lineageTag: 357c4e4a-d55f-4d53-85db-6e62cbf3f9fd
 		summarizeBy: none
 		sourceColumn: PaymentType
 
 	column Installments
 		dataType: int64
 		formatString: 0
+		lineageTag: 6d18c059-abb9-4262-8a3e-3394bc3d8630
 		summarizeBy: none
 		sourceColumn: Installments
 
 	column PaymentValue
 		dataType: decimal
 		formatString: #,0.00
+		lineageTag: 26306233-2879-4f7d-8507-32e2c7d94955
 		summarizeBy: sum
 		sourceColumn: PaymentValue
 

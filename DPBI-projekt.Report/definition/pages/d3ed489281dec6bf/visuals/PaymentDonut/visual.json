@@ -1,5 +1,14 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "PaymentDonut",
+  "position": {
+    "x": 24,
+    "y": 520,
+    "z": 0,
+    "height": 184,
+    "width": 400,
+    "tabOrder": 0
+  },
   "visual": {
     "visualType": "donutChart",
     "query": {
@@ -7,7 +16,6 @@
         "Category": {
           "projections": [
             {
-              "queryRef": "Payments.PaymentType",
               "field": {
                 "Column": {
                   "Expression": {
@@ -18,7 +26,9 @@
                   "Property": "PaymentType"
                 }
               },
+              "queryRef": "Payments.PaymentType",
               "nativeQueryRef": "PaymentType",
+              "active": true,
               "displayName": "Typ platby"
             }
           ]
@@ -26,7 +36,6 @@
         "Y": {
           "projections": [
             {
-              "queryRef": "_Measures.Payment Value",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -37,6 +46,7 @@
                   "Property": "Payment Value"
                 }
               },
+              "queryRef": "_Measures.Payment Value",
               "nativeQueryRef": "Payment Value",
               "displayName": "Platby"
             }
@@ -62,8 +72,6 @@
         "isDefaultSort": true
       }
     },
-    "objects": {},
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -98,15 +106,39 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   },
-  "position": {
-    "x": 24,
-    "y": 520,
-    "width": 400,
-    "height": 184,
-    "z": 0,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json"
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "00053b9b5fe12d2ee661",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Payments"
+              }
+            },
+            "Property": "PaymentType"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "04fdd53a8603f169b34b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Measures"
+              }
+            },
+            "Property": "Payment Value"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
 }

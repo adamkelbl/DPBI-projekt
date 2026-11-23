@@ -1,11 +1,13 @@
 /// Calendar (DAX calculated table), marked as date table. Czech month/weekday names.
 table Date
+	lineageTag: 81017640-4d5b-4b36-bab1-98b345b5d400
 	dataCategory: Time
 
 	column Date
 		dataType: dateTime
 		isKey
 		formatString: Short Date
+		lineageTag: b0521c95-0e46-4e4c-b19a-ba91e479eb60
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [Date]
@@ -13,26 +15,30 @@ table Date
 	column Year
 		dataType: int64
 		formatString: 0
+		lineageTag: 7395f269-11b9-4e91-91b4-f6e6e4e15854
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [Year]
 
 	column Quarter
 		dataType: string
+		lineageTag: d52ec36d-902f-4027-8b41-cda459152626
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [Quarter]
 
 	column MonthNo
 		dataType: int64
-		formatString: 0
 		isHidden
+		formatString: 0
+		lineageTag: 2d180495-2a8a-457c-b330-5f5c54a8d16a
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [MonthNo]
 
 	column MonthName
 		dataType: string
+		lineageTag: b35a5c58-b9b9-4f4c-8bf9-80696b0607be
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [MonthName]
@@ -40,6 +46,7 @@ table Date
 
 	column MonthShort
 		dataType: string
+		lineageTag: 34308c65-755f-48ac-a080-abac14c8a879
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [MonthShort]
@@ -48,12 +55,14 @@ table Date
 	column MonthStart
 		dataType: dateTime
 		formatString: mmm yyyy
+		lineageTag: cceeecf5-2c2c-4a33-8570-908bae8dea74
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [MonthStart]
 
 	column YearMonth
 		dataType: string
+		lineageTag: 50dcbdb2-187a-4832-9b5d-98533a124be3
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [YearMonth]
@@ -61,22 +70,25 @@ table Date
 
 	column YearMonthNo
 		dataType: int64
-		formatString: 0
 		isHidden
+		formatString: 0
+		lineageTag: 0f10b13f-6b7a-4e75-bc7d-924877478608
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [YearMonthNo]
 
 	column WeekdayNo
 		dataType: int64
-		formatString: 0
 		isHidden
+		formatString: 0
+		lineageTag: a7987e3a-07f7-4d3d-92ed-af800fee2a2c
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [WeekdayNo]
 
 	column WeekdayName
 		dataType: string
+		lineageTag: 87510ec4-afbd-4978-834c-2d29dc60f2c8
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [WeekdayName]
@@ -84,6 +96,7 @@ table Date
 
 	column WeekdayShort
 		dataType: string
+		lineageTag: 1aeadeea-a2ed-4d45-988f-2d67aded1545
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [WeekdayShort]
@@ -93,19 +106,24 @@ table Date
 	column IsAnalysisPeriod
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5f014305-4094-4c95-b9cc-a910b9eaa46c
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [IsAnalysisPeriod]
 
-	hierarchy 'Year-Month'
+	hierarchy Year-Month
+		lineageTag: cb56afdc-7b95-46ce-92e5-2f255ccb73c7
 
 		level Year
+			lineageTag: 5827bc12-0624-4de3-95fb-10d60b563de6
 			column: Year
 
 		level MonthName
+			lineageTag: 89d81f48-f589-4d43-86d1-38bf4ec1a567
 			column: MonthName
 
 		level Date
+			lineageTag: 2e54d6b4-80c3-4dc5-8300-7858990f7e0b
 			column: Date
 
 	partition Date = calculated

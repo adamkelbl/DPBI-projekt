@@ -1,5 +1,14 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "TrendMatrix",
+  "position": {
+    "x": 24,
+    "y": 248,
+    "z": 0,
+    "height": 256,
+    "width": 800,
+    "tabOrder": 0
+  },
   "visual": {
     "visualType": "pivotTable",
     "query": {
@@ -7,7 +16,6 @@
         "Rows": {
           "projections": [
             {
-              "queryRef": "Date.Year",
               "field": {
                 "Column": {
                   "Expression": {
@@ -18,11 +26,12 @@
                   "Property": "Year"
                 }
               },
+              "queryRef": "Date.Year",
               "nativeQueryRef": "Year",
+              "active": true,
               "displayName": "Rok"
             },
             {
-              "queryRef": "Date.MonthName",
               "field": {
                 "Column": {
                   "Expression": {
@@ -33,7 +42,9 @@
                   "Property": "MonthName"
                 }
               },
+              "queryRef": "Date.MonthName",
               "nativeQueryRef": "MonthName",
+              "active": false,
               "displayName": "Měsíc"
             }
           ]
@@ -41,7 +52,6 @@
         "Values": {
           "projections": [
             {
-              "queryRef": "_Measures.Revenue",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -52,11 +62,11 @@
                   "Property": "Revenue"
                 }
               },
+              "queryRef": "_Measures.Revenue",
               "nativeQueryRef": "Revenue",
               "displayName": "Tržby"
             },
             {
-              "queryRef": "_Measures.Revenue YoY %",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -67,11 +77,11 @@
                   "Property": "Revenue YoY %"
                 }
               },
+              "queryRef": "_Measures.Revenue YoY %",
               "nativeQueryRef": "Revenue YoY %",
               "displayName": "Tržby meziročně"
             },
             {
-              "queryRef": "_Measures.Order Count",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -82,11 +92,11 @@
                   "Property": "Order Count"
                 }
               },
+              "queryRef": "_Measures.Order Count",
               "nativeQueryRef": "Order Count",
               "displayName": "Objednávky"
             },
             {
-              "queryRef": "_Measures.Average Order Value",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -97,11 +107,11 @@
                   "Property": "Average Order Value"
                 }
               },
+              "queryRef": "_Measures.Average Order Value",
               "nativeQueryRef": "Average Order Value",
               "displayName": "Průměrná objednávka"
             },
             {
-              "queryRef": "_Measures.On-Time Rate",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -112,6 +122,7 @@
                   "Property": "On-Time Rate"
                 }
               },
+              "queryRef": "_Measures.On-Time Rate",
               "nativeQueryRef": "On-Time Rate",
               "displayName": "Doručeno včas"
             }
@@ -137,8 +148,6 @@
         "isDefaultSort": true
       }
     },
-    "objects": {},
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -173,17 +182,9 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   },
-  "position": {
-    "x": 24,
-    "y": 248,
-    "width": 800,
-    "height": 256,
-    "z": 0,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "filterConfig": {
     "filters": [
       {
@@ -199,7 +200,6 @@
           }
         },
         "type": "Categorical",
-        "howCreated": "User",
         "filter": {
           "Version": 2,
           "From": [
@@ -238,7 +238,8 @@
               }
             }
           ]
-        }
+        },
+        "howCreated": "User"
       }
     ]
   },

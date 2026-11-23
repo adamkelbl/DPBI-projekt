@@ -1,46 +1,54 @@
 /// Home table for all explicit measures. The only column is a hidden dummy.
 table _Measures
-
+	lineageTag: e917eb8e-81c8-43cf-ba4d-4360c4e38190
 
 	/// Sum of item prices (without freight), BRL.
 	measure Revenue = SUM(OrderItems[Price])
 		formatString: \R\$\ #,0
 		displayFolder: Sales
+		lineageTag: 0ddd47f4-9aa9-4a72-ad30-77fe5f0feed8
 
 	measure Freight = SUM(OrderItems[Freight])
 		formatString: \R\$\ #,0
 		displayFolder: Sales
+		lineageTag: a00df341-6414-4711-9a57-a18880b3af09
 
 	/// Gross merchandise value = price + freight (uses calculated column ItemTotal).
 	measure GMV = SUM(OrderItems[ItemTotal])
 		formatString: \R\$\ #,0
 		displayFolder: Sales
+		lineageTag: 4b3a9448-6b13-4b0b-a8c1-c19e5232b394
 
 	measure 'Order Count' = COUNTROWS(Orders)
 		formatString: #,0
 		displayFolder: Sales
+		lineageTag: 8cac7cb8-14ea-40ce-a125-2c17742e0f31
 
 	measure 'Items Sold' = COUNTROWS(OrderItems)
 		formatString: #,0
 		displayFolder: Sales
+		lineageTag: c0bd36f0-0607-4969-98f3-057bbccdd872
 
 	/// Average order value (GMV per order with at least one item).
 	measure 'Average Order Value' = DIVIDE([GMV], DISTINCTCOUNT(OrderItems[OrderId]))
 		formatString: \R\$\ #,0.00
 		displayFolder: Sales
+		lineageTag: 69e63c00-33c2-4ddb-bbc2-e775540375f1
 
 	measure 'Average Item Price' = AVERAGE(OrderItems[Price])
 		formatString: \R\$\ #,0.00
 		displayFolder: Sales
+		lineageTag: a9235df0-778a-430e-9c84-1cb24ebe2bb3
 
 	measure 'Freight Share' = DIVIDE([Freight], [GMV])
 		formatString: 0.0%
 		displayFolder: Sales
-
+		lineageTag: 557356d7-2245-40df-876e-2285aa237f7a
 
 	measure 'Customer Count' = DISTINCTCOUNT(Orders[CustomerUniqueId])
 		formatString: #,0
 		displayFolder: Customers
+		lineageTag: fdf4b0b5-be22-4ceb-ac92-3a7983c67bb0
 
 	measure 'Repeat Customers' =
 			COUNTROWS(
@@ -51,19 +59,22 @@ table _Measures
 			)
 		formatString: #,0
 		displayFolder: Customers
+		lineageTag: ebf3d6e1-8990-428b-a0e9-ceae3296bdd5
 
 	measure 'Repeat Customer Rate' = DIVIDE([Repeat Customers], [Customer Count])
 		formatString: 0.0%
 		displayFolder: Customers
+		lineageTag: 04de6e0c-31c8-4a65-bf5d-b1026722dc13
 
 	measure 'Orders per Customer' = DIVIDE([Order Count], [Customer Count])
 		formatString: 0.00
 		displayFolder: Customers
-
+		lineageTag: 68d6aaa6-6fba-46fe-b1e6-1f23dda4d3a5
 
 	measure 'Revenue PY' = CALCULATE([Revenue], SAMEPERIODLASTYEAR('Date'[Date]))
 		formatString: \R\$\ #,0
 		displayFolder: Time Intelligence
+		lineageTag: b1918d64-f2b2-4ea8-85ca-c6e60cb60a89
 
 	measure 'Revenue YoY %' =
 			VAR _py = [Revenue PY]
@@ -71,10 +82,12 @@ table _Measures
 				IF(NOT ISBLANK(_py), DIVIDE([Revenue] - _py, _py))
 		formatString: +0.0%;-0.0%;0.0%
 		displayFolder: Time Intelligence
+		lineageTag: 879ae1ee-82e4-42e3-942b-b8e0489236e5
 
 	measure 'Revenue YTD' = TOTALYTD([Revenue], 'Date'[Date])
 		formatString: \R\$\ #,0
 		displayFolder: Time Intelligence
+		lineageTag: 2c5b87a4-70a8-4ee1-8112-31cdbb018fce
 
 	measure 'Revenue Running Total' =
 			VAR _maxDate = MAX('Date'[Date])
@@ -82,10 +95,12 @@ table _Measures
 				CALCULATE([Revenue], 'Date'[Date] <= _maxDate, ALL('Date'))
 		formatString: \R\$\ #,0
 		displayFolder: Time Intelligence
+		lineageTag: a92fe898-7bf9-43f3-91f1-8f9d75d655c1
 
 	measure 'Orders PY' = CALCULATE([Order Count], SAMEPERIODLASTYEAR('Date'[Date]))
 		formatString: #,0
 		displayFolder: Time Intelligence
+		lineageTag: 27a32233-e19a-4b2c-bb97-9208208c3941
 
 	measure 'Orders YoY %' =
 			VAR _py = [Orders PY]
@@ -93,49 +108,58 @@ table _Measures
 				IF(NOT ISBLANK(_py), DIVIDE([Order Count] - _py, _py))
 		formatString: +0.0%;-0.0%;0.0%
 		displayFolder: Time Intelligence
-
+		lineageTag: 62175afe-b343-453f-a124-318aca5c331b
 
 	measure 'Delivered Orders' = CALCULATE([Order Count], Orders[DeliveryStatus] <> "Nedoručeno")
 		formatString: #,0
 		displayFolder: Delivery
+		lineageTag: 9443635e-d423-4d97-b329-e6ff2f868a6c
 
 	measure 'Late Orders' = CALCULATE([Order Count], Orders[DeliveryStatus] = "Pozdě")
 		formatString: #,0
 		displayFolder: Delivery
+		lineageTag: 56dc77a3-923a-48e6-8bca-9cbb35719499
 
 	/// Share of delivered orders that arrived on or before the estimated date.
 	measure 'On-Time Rate' = DIVIDE([Delivered Orders] - [Late Orders], [Delivered Orders])
 		formatString: 0.0%
 		displayFolder: Delivery
+		lineageTag: 05062476-8fdb-4a31-911c-61848b884e0f
 
 	measure 'Late Rate' = DIVIDE([Late Orders], [Delivered Orders])
 		formatString: 0.0%
 		displayFolder: Delivery
+		lineageTag: 6fe4cc0d-8f60-47d9-b3e5-28bfda2a6698
 
 	measure 'Avg Delivery Days' = AVERAGE(Orders[DeliveryDays])
 		formatString: 0.0
 		displayFolder: Delivery
+		lineageTag: 14ae205d-9468-41b3-9a95-aa3021c3cb31
 
 	measure 'Avg Delay of Late Orders' = CALCULATE(AVERAGE(Orders[DelayDays]), Orders[DeliveryStatus] = "Pozdě")
 		formatString: 0.0
 		displayFolder: Delivery
-
+		lineageTag: 5063173f-c1a6-4a89-95b0-371a80eff7ad
 
 	measure 'Review Count' = COUNTROWS(Reviews)
 		formatString: #,0
 		displayFolder: Reviews
+		lineageTag: b5c51b65-99c5-45d9-83f5-6a1599289593
 
 	measure 'Avg Review Score' = AVERAGE(Reviews[ReviewScore])
 		formatString: 0.00
 		displayFolder: Reviews
+		lineageTag: 8ad89552-5ca5-4c6f-9bb1-48e9b3bf4538
 
 	measure 'Positive Review Rate' = DIVIDE(CALCULATE([Review Count], Reviews[Sentiment] = "Pozitivní"), [Review Count])
 		formatString: 0.0%
 		displayFolder: Reviews
+		lineageTag: c89f5278-7787-4e2a-839a-d3593eaf65ab
 
 	measure 'Negative Review Rate' = DIVIDE(CALCULATE([Review Count], Reviews[Sentiment] = "Negativní"), [Review Count])
 		formatString: 0.0%
 		displayFolder: Reviews
+		lineageTag: ae6ac175-9df9-468d-b615-334be658990d
 
 	/// Key insight: how many stars late delivery costs (on-time avg − late avg).
 	measure 'Review Gap On-Time vs Late' =
@@ -143,20 +167,22 @@ table _Measures
 				- CALCULATE([Avg Review Score], Orders[DeliveryStatus] = "Pozdě")
 		formatString: 0.00
 		displayFolder: Reviews
-
+		lineageTag: b21132c1-f0cb-44d4-8ea7-1011308a4add
 
 	measure 'Payment Value' = SUM(Payments[PaymentValue])
 		formatString: \R\$\ #,0
 		displayFolder: Payments
+		lineageTag: f3b6f901-ca6f-4821-9346-192b6fe7de72
 
 	measure 'Avg Installments' = AVERAGE(Payments[Installments])
 		formatString: 0.0
 		displayFolder: Payments
+		lineageTag: 00be8f1c-d0da-48c1-a132-244695c22e6e
 
 	measure 'Payment Share' = DIVIDE([Payment Value], CALCULATE([Payment Value], ALLSELECTED(Payments[PaymentType])))
 		formatString: 0.0%
 		displayFolder: Payments
-
+		lineageTag: 6478174e-00ea-4089-94b7-93bb2f6a1fdd
 
 	measure 'Category Rank' =
 			IF(
@@ -165,6 +191,7 @@ table _Measures
 			)
 		formatString: 0
 		displayFolder: Ranking
+		lineageTag: f2d696e7-ae6b-416e-ac83-c8f07866ecde
 
 	measure 'Seller Rank' =
 			IF(
@@ -173,7 +200,7 @@ table _Measures
 			)
 		formatString: 0
 		displayFolder: Ranking
-
+		lineageTag: 697f79e7-63f2-4991-b2b0-dcceb8598a19
 
 	/// Dynamic subtitle: selected state(s) and year(s).
 	measure 'Selection Title' =
@@ -193,10 +220,12 @@ table _Measures
 			RETURN
 				_state & "  |  " & _year
 		displayFolder: UI
+		lineageTag: 42907d07-5e30-4a71-95b6-e0e490018167
 
 	/// Header of the drillthrough page: selected product category.
 	measure 'Selected Category' = "Kategorie: " & SELECTEDVALUE(Products[Category], "více kategorií")
 		displayFolder: UI
+		lineageTag: 3683fa25-4c9d-44d3-b320-042724cc5089
 
 	measure 'On-Time Color' =
 			SWITCH(
@@ -207,6 +236,7 @@ table _Measures
 				"#C0392B"
 			)
 		displayFolder: UI
+		lineageTag: 8a0b30bc-acdf-4e3e-b2ee-5219988302c0
 
 	measure 'Review Color' =
 			SWITCH(
@@ -217,11 +247,13 @@ table _Measures
 				"#C0392B"
 			)
 		displayFolder: UI
+		lineageTag: 0378f77d-6b99-40b3-a82a-b0aa6bafe2d6
 
 	column Value
 		dataType: int64
 		isHidden
 		formatString: 0
+		lineageTag: 5fbe358f-11ce-499e-84b2-477f917e9e2f
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [Value]

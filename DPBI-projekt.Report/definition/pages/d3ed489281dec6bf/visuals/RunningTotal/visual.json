@@ -1,5 +1,14 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "RunningTotal",
+  "position": {
+    "x": 440,
+    "y": 520,
+    "z": 0,
+    "height": 184,
+    "width": 816,
+    "tabOrder": 0
+  },
   "visual": {
     "visualType": "lineChart",
     "query": {
@@ -7,7 +16,6 @@
         "Category": {
           "projections": [
             {
-              "queryRef": "Date.MonthStart",
               "field": {
                 "Column": {
                   "Expression": {
@@ -18,7 +26,9 @@
                   "Property": "MonthStart"
                 }
               },
+              "queryRef": "Date.MonthStart",
               "nativeQueryRef": "MonthStart",
+              "active": true,
               "displayName": "Měsíc"
             }
           ]
@@ -26,7 +36,6 @@
         "Y": {
           "projections": [
             {
-              "queryRef": "_Measures.Revenue Running Total",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -37,6 +46,7 @@
                   "Property": "Revenue Running Total"
                 }
               },
+              "queryRef": "_Measures.Revenue Running Total",
               "nativeQueryRef": "Revenue Running Total",
               "displayName": "Kumulativní tržby"
             }
@@ -62,8 +72,6 @@
         "isDefaultSort": true
       }
     },
-    "objects": {},
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -98,17 +106,9 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   },
-  "position": {
-    "x": 440,
-    "y": 520,
-    "width": 816,
-    "height": 184,
-    "z": 0,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "filterConfig": {
     "filters": [
       {
@@ -124,7 +124,6 @@
           }
         },
         "type": "Categorical",
-        "howCreated": "User",
         "filter": {
           "Version": 2,
           "From": [
@@ -163,7 +162,8 @@
               }
             }
           ]
-        }
+        },
+        "howCreated": "User"
       }
     ]
   }

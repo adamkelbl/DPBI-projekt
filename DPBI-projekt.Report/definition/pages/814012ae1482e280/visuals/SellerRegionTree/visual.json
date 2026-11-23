@@ -1,5 +1,14 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "SellerRegionTree",
+  "position": {
+    "x": 560,
+    "y": 100,
+    "z": 0,
+    "height": 284,
+    "width": 340,
+    "tabOrder": 0
+  },
   "visual": {
     "visualType": "treemap",
     "query": {
@@ -7,7 +16,6 @@
         "Group": {
           "projections": [
             {
-              "queryRef": "Sellers.SellerRegion",
               "field": {
                 "Column": {
                   "Expression": {
@@ -18,7 +26,9 @@
                   "Property": "SellerRegion"
                 }
               },
+              "queryRef": "Sellers.SellerRegion",
               "nativeQueryRef": "SellerRegion",
+              "active": true,
               "displayName": "Region prodejce"
             }
           ]
@@ -26,7 +36,6 @@
         "Values": {
           "projections": [
             {
-              "queryRef": "_Measures.Revenue",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -37,6 +46,7 @@
                   "Property": "Revenue"
                 }
               },
+              "queryRef": "_Measures.Revenue",
               "nativeQueryRef": "Revenue",
               "displayName": "Tržby"
             }
@@ -62,8 +72,6 @@
         "isDefaultSort": true
       }
     },
-    "objects": {},
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -98,15 +106,7 @@
           }
         }
       ]
-    }
-  },
-  "position": {
-    "x": 560,
-    "y": 100,
-    "width": 340,
-    "height": 284,
-    "z": 0,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json"
+    },
+    "drillFilterOtherVisuals": true
+  }
 }

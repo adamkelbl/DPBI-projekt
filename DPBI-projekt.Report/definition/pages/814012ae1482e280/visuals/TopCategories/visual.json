@@ -1,5 +1,14 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "TopCategories",
+  "position": {
+    "x": 24,
+    "y": 100,
+    "z": 0,
+    "height": 284,
+    "width": 520,
+    "tabOrder": 0
+  },
   "visual": {
     "visualType": "clusteredBarChart",
     "query": {
@@ -7,7 +16,6 @@
         "Category": {
           "projections": [
             {
-              "queryRef": "Products.Category",
               "field": {
                 "Column": {
                   "Expression": {
@@ -18,34 +26,16 @@
                   "Property": "Category"
                 }
               },
+              "queryRef": "Products.Category",
               "nativeQueryRef": "Category",
+              "active": true,
               "displayName": "Kategorie"
-            }
-          ]
-        },
-        "Y": {
-          "projections": [
-            {
-              "queryRef": "_Measures.Revenue",
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Revenue"
-                }
-              },
-              "nativeQueryRef": "Revenue",
-              "displayName": "Tržby"
             }
           ]
         },
         "Tooltips": {
           "projections": [
             {
-              "queryRef": "_Measures.Avg Review Score",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -56,8 +46,28 @@
                   "Property": "Avg Review Score"
                 }
               },
+              "queryRef": "_Measures.Avg Review Score",
               "nativeQueryRef": "Avg Review Score",
               "displayName": "Ø hodnocení"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Revenue"
+                }
+              },
+              "queryRef": "_Measures.Revenue",
+              "nativeQueryRef": "Revenue",
+              "displayName": "Tržby"
             }
           ]
         }
@@ -81,8 +91,6 @@
         "isDefaultSort": true
       }
     },
-    "objects": {},
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -117,17 +125,9 @@
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   },
-  "position": {
-    "x": 24,
-    "y": 100,
-    "width": 520,
-    "height": 284,
-    "z": 0,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "filterConfig": {
     "filters": [
       {
@@ -143,7 +143,6 @@
           }
         },
         "type": "TopN",
-        "howCreated": "User",
         "filter": {
           "Version": 2,
           "From": [
@@ -230,7 +229,8 @@
               }
             }
           ]
-        }
+        },
+        "howCreated": "User"
       }
     ]
   }

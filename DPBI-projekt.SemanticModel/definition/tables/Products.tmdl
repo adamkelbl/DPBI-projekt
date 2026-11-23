@@ -1,50 +1,59 @@
 /// Products with English category names (merged from the translation CSV, prettified).
 table Products
+	lineageTag: 051108c7-4cda-43b4-9a9f-e006aa8d3f78
 
 	column ProductId
 		dataType: string
 		isHidden
+		lineageTag: cce8b451-1641-4b63-9198-1c3027f40008
 		summarizeBy: none
 		sourceColumn: ProductId
 
 	column Category
 		dataType: string
+		lineageTag: 98c485fe-4e56-42f3-95de-533ce63ea897
 		summarizeBy: none
 		sourceColumn: Category
 
 	column CategoryPt
 		dataType: string
 		isHidden
+		lineageTag: 2d858c1c-ab65-4c1b-852d-1719494d96d4
 		summarizeBy: none
 		sourceColumn: CategoryPt
 
 	column PhotosQty
 		dataType: int64
 		formatString: 0
+		lineageTag: 42bb7ca5-9cf3-49d2-9c62-e570265fe762
 		summarizeBy: none
 		sourceColumn: PhotosQty
 
 	column WeightG
 		dataType: double
 		formatString: #,0
+		lineageTag: 0157bb74-4b4b-4e1f-9032-f96b13bec35c
 		summarizeBy: none
 		sourceColumn: WeightG
 
 	column LengthCm
 		dataType: double
 		formatString: #,0
+		lineageTag: dfe218c7-a63d-43f7-9812-881c09120372
 		summarizeBy: none
 		sourceColumn: LengthCm
 
 	column HeightCm
 		dataType: double
 		formatString: #,0
+		lineageTag: 147d0208-e3e3-4c87-9cbb-6aedbdedda61
 		summarizeBy: none
 		sourceColumn: HeightCm
 
 	column WidthCm
 		dataType: double
 		formatString: #,0
+		lineageTag: d62d9749-e20c-4d31-ba91-272348957bf2
 		summarizeBy: none
 		sourceColumn: WidthCm
 
@@ -59,6 +68,7 @@ table Products
 				"Velmi těžké (10+ kg)"
 			)
 		dataType: string
+		lineageTag: 422b8d5f-07e7-4a92-8a11-d99b961c0df6
 		summarizeBy: none
 		sortByColumn: WeightClassOrder
 
@@ -73,6 +83,7 @@ table Products
 			)
 		dataType: int64
 		isHidden
+		lineageTag: ba1ccb86-4701-469a-af41-b0b249af6278
 		summarizeBy: none
 
 	partition Products = m

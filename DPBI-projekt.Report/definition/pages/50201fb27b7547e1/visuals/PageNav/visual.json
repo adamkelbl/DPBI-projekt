@@ -1,20 +1,19 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "c80702f9e4b3024a",
+  "position": {
+    "x": 892,
+    "y": 26,
+    "z": 0,
+    "height": 48,
+    "width": 364,
+    "tabOrder": 0
+  },
   "visual": {
     "visualType": "pageNavigator",
     "query": {
       "queryState": {}
     },
-    "objects": {},
     "drillFilterOtherVisuals": true
-  },
-  "position": {
-    "x": 788,
-    "y": 20,
-    "width": 468,
-    "height": 56,
-    "z": 0,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json"
+  }
 }

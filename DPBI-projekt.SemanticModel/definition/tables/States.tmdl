@@ -1,36 +1,43 @@
 /// Brazilian states (27). Manually entered: Czech region names, state capital coordinates for the map.
 table States
+	lineageTag: 71f2a46a-5a04-4e3c-a6eb-0115be381f00
 
 	column StateCode
 		dataType: string
+		lineageTag: 9f2b8760-425b-4750-a1e4-300735b1e5a7
 		summarizeBy: none
 		sourceColumn: StateCode
 
 	column StateName
 		dataType: string
+		lineageTag: a99d692e-9af0-436b-b150-494c527c8522
 		dataCategory: StateOrProvince
 		summarizeBy: none
 		sourceColumn: StateName
 
 	column Region
 		dataType: string
+		lineageTag: 8b729efb-50da-4b0b-88c6-b1dde921e7a9
 		summarizeBy: none
 		sourceColumn: Region
 
 	column Latitude
 		dataType: double
+		lineageTag: 2016bfa0-9095-4471-b9e7-afb7d6495f23
 		dataCategory: Latitude
 		summarizeBy: none
 		sourceColumn: Latitude
 
 	column Longitude
 		dataType: double
+		lineageTag: f555c418-490b-496c-b6ea-706046673d5e
 		dataCategory: Longitude
 		summarizeBy: none
 		sourceColumn: Longitude
 
 	column MapLocation
 		dataType: string
+		lineageTag: e5c18619-fef0-4c21-bf80-a4533e82daeb
 		dataCategory: Place
 		summarizeBy: none
 		sourceColumn: MapLocation

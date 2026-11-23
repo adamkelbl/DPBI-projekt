@@ -73,7 +73,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Průměrná doba doručení (dny)'"
+                  "Value": "'Ø doba doručení (dny)'"
                 }
               }
             }

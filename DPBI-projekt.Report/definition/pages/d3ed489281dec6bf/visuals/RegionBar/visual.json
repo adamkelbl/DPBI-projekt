@@ -1,5 +1,14 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "RegionBar",
+  "position": {
+    "x": 840,
+    "y": 200,
+    "z": 0,
+    "height": 304,
+    "width": 416,
+    "tabOrder": 0
+  },
   "visual": {
     "visualType": "clusteredBarChart",
     "query": {
@@ -7,7 +16,6 @@
         "Category": {
           "projections": [
             {
-              "queryRef": "States.Region",
               "field": {
                 "Column": {
                   "Expression": {
@@ -18,7 +26,9 @@
                   "Property": "Region"
                 }
               },
+              "queryRef": "States.Region",
               "nativeQueryRef": "Region",
+              "active": true,
               "displayName": "Region"
             }
           ]
@@ -26,7 +36,6 @@
         "Y": {
           "projections": [
             {
-              "queryRef": "_Measures.Revenue",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -37,6 +46,7 @@
                   "Property": "Revenue"
                 }
               },
+              "queryRef": "_Measures.Revenue",
               "nativeQueryRef": "Revenue",
               "displayName": "Tržby"
             }
@@ -62,8 +72,6 @@
         "isDefaultSort": true
       }
     },
-    "objects": {},
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -97,43 +105,8 @@
             }
           }
         }
-      ],
-      "visualTooltip": [
-        {
-          "properties": {
-            "section": {
-              "expr": {
-                "Literal": {
-                  "Value": "'7ab61ed3c3e4c565'"
-                }
-              }
-            },
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "type": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Canvas'"
-                }
-              }
-            }
-          }
-        }
       ]
-    }
-  },
-  "position": {
-    "x": 840,
-    "y": 200,
-    "width": 416,
-    "height": 304,
-    "z": 0,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json"
+    },
+    "drillFilterOtherVisuals": true
+  }
 }

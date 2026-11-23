@@ -1,13 +1,26 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "0873b16240c64805",
+  "position": {
+    "x": 440,
+    "y": 6,
+    "z": 0,
+    "height": 86,
+    "width": 130,
+    "tabOrder": 0
+  },
   "visual": {
     "visualType": "slicer",
+    "syncGroup": {
+      "groupName": "Rok",
+      "fieldChanges": true,
+      "filterChanges": true
+    },
     "query": {
       "queryState": {
         "Values": {
           "projections": [
             {
-              "queryRef": "Date.Year",
               "field": {
                 "Column": {
                   "Expression": {
@@ -18,7 +31,9 @@
                   "Property": "Year"
                 }
               },
+              "queryRef": "Date.Year",
               "nativeQueryRef": "Year",
+              "active": true,
               "displayName": "Rok"
             }
           ]
@@ -40,7 +55,6 @@
         }
       ]
     },
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -75,15 +89,7 @@
           }
         }
       ]
-    }
-  },
-  "position": {
-    "x": 340,
-    "y": 8,
-    "width": 150,
-    "height": 80,
-    "z": 0,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json"
+    },
+    "drillFilterOtherVisuals": true
+  }
 }

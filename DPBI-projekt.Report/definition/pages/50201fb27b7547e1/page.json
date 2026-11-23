@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "50201fb27b7547e1",
-  "displayName": "Geografie a doručení",
+  "displayName": "Geografie",
   "width": 1280,
   "height": 720,
   "displayOption": "FitToPage"

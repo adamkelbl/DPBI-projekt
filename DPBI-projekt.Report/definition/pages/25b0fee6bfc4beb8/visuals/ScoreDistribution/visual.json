@@ -1,5 +1,14 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "ScoreDistribution",
+  "position": {
+    "x": 24,
+    "y": 200,
+    "z": 0,
+    "height": 248,
+    "width": 400,
+    "tabOrder": 0
+  },
   "visual": {
     "visualType": "clusteredColumnChart",
     "query": {
@@ -7,7 +16,6 @@
         "Category": {
           "projections": [
             {
-              "queryRef": "Reviews.ReviewScore",
               "field": {
                 "Column": {
                   "Expression": {
@@ -18,7 +26,9 @@
                   "Property": "ReviewScore"
                 }
               },
+              "queryRef": "Reviews.ReviewScore",
               "nativeQueryRef": "ReviewScore",
+              "active": true,
               "displayName": "Hvězdy"
             }
           ]
@@ -26,7 +36,6 @@
         "Y": {
           "projections": [
             {
-              "queryRef": "_Measures.Review Count",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -37,6 +46,7 @@
                   "Property": "Review Count"
                 }
               },
+              "queryRef": "_Measures.Review Count",
               "nativeQueryRef": "Review Count",
               "displayName": "Počet recenzí"
             }
@@ -62,8 +72,6 @@
         "isDefaultSort": true
       }
     },
-    "objects": {},
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -98,15 +106,7 @@
           }
         }
       ]
-    }
-  },
-  "position": {
-    "x": 24,
-    "y": 200,
-    "width": 400,
-    "height": 248,
-    "z": 0,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json"
+    },
+    "drillFilterOtherVisuals": true
+  }
 }

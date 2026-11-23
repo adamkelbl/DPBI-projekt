@@ -1,13 +1,21 @@
 {
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "StateMap",
+  "position": {
+    "x": 24,
+    "y": 200,
+    "z": 0,
+    "height": 504,
+    "width": 600,
+    "tabOrder": 0
+  },
   "visual": {
-    "visualType": "azureMap",
+    "visualType": "clusteredBarChart",
     "query": {
       "queryState": {
         "Category": {
           "projections": [
             {
-              "queryRef": "States.StateName",
               "field": {
                 "Column": {
                   "Expression": {
@@ -18,7 +26,9 @@
                   "Property": "StateName"
                 }
               },
+              "queryRef": "States.StateName",
               "nativeQueryRef": "StateName",
+              "active": true,
               "displayName": "Stát"
             }
           ]
@@ -26,43 +36,6 @@
         "Y": {
           "projections": [
             {
-              "queryRef": "States.Latitude",
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "States"
-                    }
-                  },
-                  "Property": "Latitude"
-                }
-              },
-              "nativeQueryRef": "Latitude"
-            }
-          ]
-        },
-        "X": {
-          "projections": [
-            {
-              "queryRef": "States.Longitude",
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "States"
-                    }
-                  },
-                  "Property": "Longitude"
-                }
-              },
-              "nativeQueryRef": "Longitude"
-            }
-          ]
-        },
-        "Size": {
-          "projections": [
-            {
-              "queryRef": "_Measures.Revenue",
               "field": {
                 "Measure": {
                   "Expression": {
@@ -73,6 +46,7 @@
                   "Property": "Revenue"
                 }
               },
+              "queryRef": "_Measures.Revenue",
               "nativeQueryRef": "Revenue",
               "displayName": "Tržby"
             }
@@ -100,9 +74,6 @@
     },
     "objects": {
       "dataPoint": [
-        {
-          "properties": {}
-        },
         {
           "properties": {
             "fill": {
@@ -132,9 +103,47 @@
             ]
           }
         }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
-    "drillFilterOtherVisuals": true,
     "visualContainerObjects": {
       "title": [
         {
@@ -162,49 +171,21 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "visualTooltip": [
-        {
-          "properties": {
-            "section": {
-              "expr": {
-                "Literal": {
-                  "Value": "'7ab61ed3c3e4c565'"
-                }
-              }
-            },
-            "show": {
-              "expr": {
-                "Literal": {
                   "Value": "true"
                 }
               }
             },
-            "type": {
+            "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Canvas'"
+                  "Value": "'Barva = podíl doručení včas (zelená ≥ 92 %, žlutá ≥ 85 %, jinak červená)'"
                 }
               }
             }
           }
         }
       ]
-    }
-  },
-  "position": {
-    "x": 24,
-    "y": 200,
-    "width": 600,
-    "height": 504,
-    "z": 0,
-    "tabOrder": 0
-  },
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json"
+    },
+    "drillFilterOtherVisuals": true
+  }
 }

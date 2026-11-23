@@ -1,46 +1,54 @@
 /// Order lines – one row per item. Relationship to Orders is bidirectional (products/sellers filter order-level measures).
 table OrderItems
+	lineageTag: 9dc5c79b-f5b2-4a77-b0b0-0d22c5f163ba
 
 	column OrderId
 		dataType: string
 		isHidden
+		lineageTag: fa3579f4-1f0f-4bfc-8be9-43330647cd10
 		summarizeBy: none
 		sourceColumn: OrderId
 
 	column OrderItemId
 		dataType: int64
-		formatString: 0
 		isHidden
+		formatString: 0
+		lineageTag: ef1004df-e5e9-44cb-b3af-4b024a122c0f
 		summarizeBy: none
 		sourceColumn: OrderItemId
 
 	column ProductId
 		dataType: string
 		isHidden
+		lineageTag: a74cb9e5-1b5e-4330-81b6-9dc01ab098f5
 		summarizeBy: none
 		sourceColumn: ProductId
 
 	column SellerId
 		dataType: string
 		isHidden
+		lineageTag: 77e2beb1-e2c9-4d1c-90bc-d113b32dc396
 		summarizeBy: none
 		sourceColumn: SellerId
 
 	column ShippingLimitDate
 		dataType: dateTime
 		formatString: General Date
+		lineageTag: 51023d69-62e9-4af1-bade-637210b44d1e
 		summarizeBy: none
 		sourceColumn: ShippingLimitDate
 
 	column Price
 		dataType: decimal
 		formatString: #,0.00
+		lineageTag: b5961499-9575-470d-9047-90d5a10c3c8d
 		summarizeBy: sum
 		sourceColumn: Price
 
 	column Freight
 		dataType: decimal
 		formatString: #,0.00
+		lineageTag: 4eb173a0-8088-4a8a-8763-d115d9f9f1e5
 		summarizeBy: sum
 		sourceColumn: Freight
 
@@ -48,6 +56,7 @@ table OrderItems
 	column ItemTotal = OrderItems[Price] + OrderItems[Freight]
 		dataType: decimal
 		formatString: #,0.00
+		lineageTag: 2f25cf08-2250-48a6-8d16-1e028b689255
 		summarizeBy: sum
 
 	partition OrderItems = m

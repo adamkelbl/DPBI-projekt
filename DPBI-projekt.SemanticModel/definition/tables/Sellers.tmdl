@@ -1,36 +1,43 @@
 /// Sellers. State name/region merged from States in Power Query (no relationship to States to avoid ambiguous paths).
 table Sellers
+	lineageTag: 12146fa4-f028-4521-8a25-be7bc286af42
 
 	column SellerId
 		dataType: string
+		lineageTag: dc9aaf29-ee6f-4efb-92d3-720a88299433
 		summarizeBy: none
 		sourceColumn: SellerId
 
 	column ZipPrefix
 		dataType: string
+		lineageTag: 3023eee6-066d-41b7-86af-e7fd5f7e137b
 		dataCategory: PostalCode
 		summarizeBy: none
 		sourceColumn: ZipPrefix
 
 	column City
 		dataType: string
+		lineageTag: 9b560528-8697-4205-98da-2ba6c0a3f7aa
 		dataCategory: City
 		summarizeBy: none
 		sourceColumn: City
 
 	column StateCode
 		dataType: string
+		lineageTag: 9aa57d50-c1a6-4fed-8c84-59a347b1f263
 		summarizeBy: none
 		sourceColumn: StateCode
 
 	column SellerStateName
 		dataType: string
+		lineageTag: 0853f0b8-8c4c-417d-b5f8-ed032b1443aa
 		dataCategory: StateOrProvince
 		summarizeBy: none
 		sourceColumn: SellerStateName
 
 	column SellerRegion
 		dataType: string
+		lineageTag: 0a144cf0-5b29-4722-8f0a-5d138ccf86ae
 		summarizeBy: none
 		sourceColumn: SellerRegion
 

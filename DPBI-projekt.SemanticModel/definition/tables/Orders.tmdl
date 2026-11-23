@@ -1,65 +1,80 @@
 /// Order header – one row per order. Hub table: Date and Customers filter it, it filters OrderItems/Payments/Reviews.
 table Orders
+	lineageTag: 3f04ca38-a96d-4880-879c-88c71d4cd46e
 
 	column OrderId
 		dataType: string
 		isHidden
+		lineageTag: 1ba7c2a5-db1d-4764-aec7-8385fc224dcf
 		summarizeBy: none
 		sourceColumn: OrderId
 
 	column CustomerId
 		dataType: string
 		isHidden
+		lineageTag: ae049f07-8f07-4c13-97b5-7c6030a82f3c
 		summarizeBy: none
 		sourceColumn: CustomerId
 
 	column CustomerUniqueId
 		dataType: string
 		isHidden
+		lineageTag: 6aa805fd-fcc0-4ba4-a031-36b387b78c8f
 		summarizeBy: none
 		sourceColumn: CustomerUniqueId
 
 	column OrderStatus
 		dataType: string
+		lineageTag: fd043430-cb6d-4bb2-a793-431d02852fac
 		summarizeBy: none
 		sourceColumn: OrderStatus
 
 	column PurchaseTimestamp
 		dataType: dateTime
 		formatString: General Date
+		lineageTag: 37cab27c-950b-4ad8-bc63-c9f7df2a4953
 		summarizeBy: none
 		sourceColumn: PurchaseTimestamp
 
 	column PurchaseDate
 		dataType: dateTime
-		formatString: Short Date
 		isHidden
+		formatString: Short Date
+		lineageTag: 2a350107-21c0-4896-9909-6ed32f3a6712
 		summarizeBy: none
 		sourceColumn: PurchaseDate
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	column ApprovedAt
 		dataType: dateTime
 		formatString: General Date
+		lineageTag: c850c0bf-6528-43db-a476-7f179942d86d
 		summarizeBy: none
 		sourceColumn: ApprovedAt
 
 	column DeliveredCarrierDate
 		dataType: dateTime
 		formatString: General Date
+		lineageTag: 60595bd5-1efb-4033-83ef-3f6d9c21ddd9
 		summarizeBy: none
 		sourceColumn: DeliveredCarrierDate
 
 	column DeliveredCustomerDate
 		dataType: dateTime
 		formatString: General Date
+		lineageTag: 54211f84-6f83-4c13-997c-39663a085a8a
 		summarizeBy: none
 		sourceColumn: DeliveredCustomerDate
 
 	column EstimatedDeliveryDate
 		dataType: dateTime
 		formatString: Short Date
+		lineageTag: 5bff480d-82e5-426c-b909-9f43232b9db6
 		summarizeBy: none
 		sourceColumn: EstimatedDeliveryDate
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	/// Calculated column: days from purchase to delivery to the customer.
 	column DeliveryDays =
@@ -69,6 +84,7 @@ table Orders
 			)
 		dataType: int64
 		formatString: 0
+		lineageTag: 4ef83ad7-d979-49d2-88a2-184342a19d67
 		summarizeBy: none
 
 	/// Calculated column: days after the estimated delivery date (negative = delivered early).
@@ -79,6 +95,7 @@ table Orders
 			)
 		dataType: int64
 		formatString: 0
+		lineageTag: 735b9b71-07c9-496a-bdb7-68fca6227467
 		summarizeBy: none
 
 	/// Calculated column: Včas / Pozdě / Nedoručeno.
@@ -90,13 +107,20 @@ table Orders
 				"Včas"
 			)
 		dataType: string
+		lineageTag: f6133e9f-b777-4393-9edf-66ff3f306b92
 		summarizeBy: none
 		sortByColumn: DeliveryStatusOrder
 
 	column DeliveryStatusOrder =
-			SWITCH(Orders[DeliveryStatus], "Včas", 1, "Pozdě", 2, 3)
+			SWITCH(
+				TRUE(),
+				ISBLANK(Orders[DeliveredCustomerDate]), 3,
+				Orders[DelayDays] > 0, 2,
+				1
+			)
 		dataType: int64
 		isHidden
+		lineageTag: 5d06d753-6c47-449e-8ad0-99505ad484bc
 		summarizeBy: none
 
 	/// Calculated column: delay bucket – used to show the review score drop with growing delay.
@@ -111,6 +135,7 @@ table Orders
 				"8+ dní pozdě"
 			)
 		dataType: string
+		lineageTag: bc79a760-70cc-4efe-a480-6a8cde8afafa
 		summarizeBy: none
 		sortByColumn: DelayBucketOrder
 
@@ -126,12 +151,14 @@ table Orders
 			)
 		dataType: int64
 		isHidden
+		lineageTag: 995546a5-9bf9-448b-a8e0-5667b5283e81
 		summarizeBy: none
 
 	/// Calculated column: hour of purchase (0–23) for the weekday × hour heatmap.
 	column PurchaseHour = HOUR(Orders[PurchaseTimestamp])
 		dataType: int64
 		formatString: 0
+		lineageTag: bea250aa-11db-4356-86f5-bece8e743bb0
 		summarizeBy: none
 
 	partition Orders = m

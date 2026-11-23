@@ -1,39 +1,48 @@
 /// Customer reviews (1–5). Portuguese comment texts dropped, only HasComment flag kept.
 table Reviews
+	lineageTag: 783e56ec-bd69-4d2e-890e-3180e2b6c0d5
 
 	column ReviewId
 		dataType: string
 		isHidden
+		lineageTag: 3f3184ae-9331-445e-9817-024e9a0bb3c3
 		summarizeBy: none
 		sourceColumn: ReviewId
 
 	column OrderId
 		dataType: string
 		isHidden
+		lineageTag: 484626ce-9f69-454c-b7e5-1015c6305e55
 		summarizeBy: none
 		sourceColumn: OrderId
 
 	column ReviewScore
 		dataType: int64
 		formatString: 0
+		lineageTag: 4abaa0db-22cf-43a3-bf70-ba7777567fe0
 		summarizeBy: none
 		sourceColumn: ReviewScore
 
 	column HasComment
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3b9899a3-bfc6-4a9e-9fcb-274bb5944691
 		summarizeBy: none
 		sourceColumn: HasComment
 
 	column ReviewCreationDate
 		dataType: dateTime
 		formatString: Short Date
+		lineageTag: 21b628e0-7373-4ff5-963a-c5ee01f17ff2
 		summarizeBy: none
 		sourceColumn: ReviewCreationDate
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	column ReviewAnswerTimestamp
 		dataType: dateTime
 		formatString: General Date
+		lineageTag: 6c3ee725-c8e9-47a5-aae7-37a7ec4783db
 		summarizeBy: none
 		sourceColumn: ReviewAnswerTimestamp
 
@@ -46,13 +55,20 @@ table Reviews
 				"Negativní"
 			)
 		dataType: string
+		lineageTag: fadd2d2a-d59e-4b51-b924-130cd70a1fcc
 		summarizeBy: none
 		sortByColumn: SentimentOrder
 
 	column SentimentOrder =
-			SWITCH(Reviews[Sentiment], "Pozitivní", 1, "Neutrální", 2, 3)
+			SWITCH(
+				TRUE(),
+				Reviews[ReviewScore] >= 4, 1,
+				Reviews[ReviewScore] = 3, 2,
+				3
+			)
 		dataType: int64
 		isHidden
+		lineageTag: 3e0c1835-c0d7-4d1a-8c75-fe1eaa2d7b6b
 		summarizeBy: none
 
 	partition Reviews = m
